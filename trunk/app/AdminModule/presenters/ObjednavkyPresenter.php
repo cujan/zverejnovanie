@@ -8,22 +8,22 @@ use Grido\Grid, Grido\Components\Filters\Filter,
 	Vodacek\Forms\Controls\DateInput;
 
 /**
- * Description of FakturyPresenter
+ * Description of ObjednavkyPresenter
  *
  * @author holub
  */
-class FakturyPresenter extends \BasePresenter {
+class ObjednavkyPresenter extends \BasePresenter {
 
     /**
      * (non-phpDoc)
      *
      * @see Nette\Application\Presenter#startup()
      */
-    private $fakturyRepository;
+    private $objednavkyRepository;
     
     protected function startup() {
 	parent::startup();
-	$this->fakturyRepository = $this->context->fakturyRepository;
+	$this->objednavkyRepository = $this->context->objednavkyRepository;
     }
 
     public function actionDefault() {
@@ -37,39 +37,37 @@ class FakturyPresenter extends \BasePresenter {
      /************** edit ****************************/
     public function renderEdit($id = 0)
 	{
-		$form = $this['fakturaForm'];
+		$form = $this['objednavkaForm'];
 		if (!$form->isSubmitted()) {
-			$faktura = $this->fakturyRepository->findById($id);
-			if (!$faktura) {
+			$objednavka = $this->objednavkyRepository->findById($id);
+			if (!$objednavka) {
 				$this->error('Zaznam nenajdeny');
 			}
-			$form->setDefaults($faktura);
+			$form->setDefaults($objednavka);
 		}
 	}
     /********************* view delete *********************/
     public function renderDelete($id = 0)
 	{
-		$this->template->faktury = $this->fakturyRepository->findById($id);
-		if (!$this->template->faktury) {
+		$this->template->objednavky = $this->objednavkyRepository->findById($id);
+		if (!$this->template->objednavky) {
 			$this->error('Záznam nenájdený');
 		}
 	}
 
-    protected function createComponentGridFaktura($name)
+    protected function createComponentGridObjednavka($name)
     {
 	$grid = new Grid($this, $name);
 	$grid->translator->lang = 'sk';
 	$grid->filterRenderType = Filter::RENDER_INNER;
 	//$grid->setDefaultSort(array('zverejnenie'=>'desc'));
-	$grid->setModel($this->fakturyRepository->findAll());
-	$grid->addColumnText('cisloFaktury', 'Cislo Faktury')->setSortable()->setFilterText();
-	$grid->addColumnText('predmetFaktury', 'Predmet faktúry')->setSortable()->setFilterText();
+	$grid->setModel($this->objednavkyRepository->findAll());
+	$grid->addColumnText('cisloObjednavky', 'Číslo objednávky')->setSortable()->setFilterText();
+	$grid->addColumnText('predmetObjednavky', 'Predmet objednávky')->setSortable()->setFilterText();
 	$grid->addColumnText('dodavatel', 'Dodávateľ')->setSortable()->setFilterText();
 	$grid->addColumnText('objednavatel', 'Objednávateľ')->setSortable()->setFilterText();
-	$grid->addColumnText('celkovaHodnota', 'Celková hodnota')->setSortable()->setFilterText();
-	//$grid->addColumnDate('dorucenie', 'Doručenie')->setSortable()->setFilterText();
-	$grid->addColumnDate('splatnost', 'Splatnosť')->setSortable()->setFilterText();
-	$grid->addColumnDate('zverejnenie', 'Zverejnenie')->setSortable()->setFilterText();
+	$grid->addColumnText('vystavenie', 'Vystavenie')->setSortable()->setFilterText();
+	$grid->addColumnText('zverejnene', 'Zverejnenie')->setSortable()->setFilterText();
 	
 	$grid->addActionHref('edit', 'Edit')->setIcon('pencil');
 	$grid->addActionHref('delete', 'Delete')->setIcon('pencil');
@@ -79,22 +77,19 @@ class FakturyPresenter extends \BasePresenter {
     
     
     //formular pre pridanie zakazky
-    protected function createComponentFakturaForm() {
+    protected function createComponentObjednavkaForm() {
 		
 	$form = new Form;
-	$form->addText('cisloFaktury','Cislo Faktury');
-	$form->addText('predmetFaktury','Predmet faktúry');
+	$form->addText('cisloObjednavky','Číslo objednávky');
+	$form->addText('predmetObjednavky','Predmet objednávky');
 	$form->addText('dodavatel','Dodávateľ');
 	$form->addText('objednavatel','Objednávateľ');
-	$form->addText('celkovaHodnota','Celková hodnota');
-	
-	$form->addDate('dorucenie', 'Doručenie', DateInput::TYPE_DATE)
+		
+	$form->addDate('vystavenie', 'Vystavenie', DateInput::TYPE_DATE)
 		->addRule(Form::VALID);
-	$form->addDate('splatnost', 'Splatnosť', DateInput::TYPE_DATE)
+	$form->addDate('zverejnene', 'Zverejnenie', DateInput::TYPE_DATE)
 		->addRule(Form::VALID);
-	$form->addDate('zverejnenie', 'Zverejnenie', DateInput::TYPE_DATE)
-		->addRule(Form::VALID);
-	$form->addSubmit('uloz', 'Ulož')->onClick[] = callback($this, 'fakturaFormSubmitted');
+	$form->addSubmit('uloz', 'Ulož')->onClick[] = callback($this, 'objednavkaFormSubmitted');
 	$form->addSubmit('cancel', 'Storno')->onClick[] = callback($this,'cancelFormSubmitted');
 	//$form->onSuccess[] = callback($this, 'zakazkaFormSubmitted');
 	return $form;
@@ -102,17 +97,17 @@ class FakturyPresenter extends \BasePresenter {
     }
     
      // volá se po úspěšném odeslání formuláře
-    public function fakturaFormSubmitted($button)
+    public function objednavkaFormSubmitted($button)
     {
         $values = $button->getForm()->getValues();
 		
 		$id = (int) $this->getParameter('id');
 		if ($id) {
-			$this->fakturyRepository->findById($id)->update($values);
-			$this->flashMessage('Faktúra bola upravená.');
+			$this->objednavkyRepository->findById($id)->update($values);
+			$this->flashMessage('Objednávka bola upravená.');
 		} else {
-			$this->fakturyRepository->findAll()->insert($values);
-			$this->flashMessage('Faktúra bola pridaná.');
+			$this->objednavkyRepository->findAll()->insert($values);
+			$this->flashMessage('Objednávka bola pridaná.');
 		}
 		$this->redirect('default');
 
@@ -130,8 +125,8 @@ class FakturyPresenter extends \BasePresenter {
 	}
     public function deleteFormSucceeded()
 	{
-		$this->fakturyRepository->findById($this->getParameter('id'))->delete();
-		$this->flashMessage('Faktúra bola úspešne zmazaná.');
+		$this->objednavkyRepository->findById($this->getParameter('id'))->delete();
+		$this->flashMessage('Objednávka bola úspešne zmazaná.');
 		$this->redirect('default');
 	}
     public function cancelFormSubmitted()

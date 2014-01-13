@@ -1,17 +1,17 @@
-<?php //netteCache[01]000458a:2:{s:4:"time";s:21:"0.15874600 1388085972";s:9:"callbacks";a:2:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:137:"C:\Program Files (x86)\EasyPHP-DevServer-13.1VC11\data\localweb\projects\zverejnovanienew\app\AdminModule\templates\Faktury\default.latte";i:2;i:1388085968;}i:1;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:10:"checkConst";}i:1;s:25:"Nette\Framework::REVISION";i:2;s:28:"$WCREV$ released on $WCDATE$";}}}?><?php
+<?php //netteCache[01]000458a:2:{s:4:"time";s:21:"0.50498200 1389643763";s:9:"callbacks";a:2:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:137:"C:\Program Files (x86)\EasyPHP-DevServer-13.1VC11\data\localweb\projects\zverejnovanienew\app\AdminModule\templates\Faktury\default.latte";i:2;i:1389643760;}i:1;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:10:"checkConst";}i:1;s:25:"Nette\Framework::REVISION";i:2;s:28:"$WCREV$ released on $WCDATE$";}}}?><?php
 
 // source file: C:\Program Files (x86)\EasyPHP-DevServer-13.1VC11\data\localweb\projects\zverejnovanienew\app\AdminModule\templates\Faktury\default.latte
 
 ?><?php
 // prolog Nette\Latte\Macros\CoreMacros
-list($_l, $_g) = Nette\Latte\Macros\CoreMacros::initRuntime($template, 'k34b6p5h9w')
+list($_l, $_g) = Nette\Latte\Macros\CoreMacros::initRuntime($template, 'bbli71f8ed')
 ;
 // prolog Nette\Latte\Macros\UIMacros
 //
 // block content
 //
-if (!function_exists($_l->blocks['content'][] = '_lb9c87a5ef06_content')) { function _lb9c87a5ef06_content($_l, $_args) { extract($_args)
-?><h1>Faktury</h1>
+if (!function_exists($_l->blocks['content'][] = '_lb5782b43ee2_content')) { function _lb5782b43ee2_content($_l, $_args) { extract($_args)
+?><h1>Faktúry</h1>
     <h2><a href="<?php echo htmlSpecialChars($_control->link("faktury:add")) ?>">Pridaj fakturu</a></h2>
 <?php $_ctrl = $_control->getComponent("gridFaktura"); if ($_ctrl instanceof Nette\Application\UI\IRenderable) $_ctrl->validateControl(); $_ctrl->render() ;
 }}
